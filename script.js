@@ -84,7 +84,7 @@ function sumArr(array) {
 }
 $('.alert').hide()
 
-console.log(document.location.href)
+console.log(document.location.origin)
 
 function jsSubmitForm(e) {
 	/*if ($(e).find("button").text() == 'Skicka') {
