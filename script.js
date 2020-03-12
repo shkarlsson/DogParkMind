@@ -273,7 +273,7 @@ var runTheWholeShebang = async function() {
 		function(parkData) {
 			parkData = CSVToArray(parkData)
 
-			for (var i = 0; i < parkData.length - 1; i++) {
+			for (var i = 1; i < parkData.length; i++) {
 				var p = {
 					"type": "Feature",
 					"properties": {
@@ -295,20 +295,17 @@ var runTheWholeShebang = async function() {
 			function doWhenLocationHasBeenFound(position) {
 				if (position) {
 					var closestParkDistance = 999999
-					var closestParkNo = 0
+					var closestParkIdx = 0
 					for (var i in parks.features) {
-						console.log(i)
-						console.log(parks.features[i].properties.nr)
 						parks.features[i].properties.distance = Math.round(getDistanceFromLatLonInKm(position.coords.latitude, position.coords.longitude, parks.features[i].geometry.coordinates[1], parks.features[i].geometry.coordinates[0]))
-						console.log(parks.features[i].properties.distance)
 						if (parks.features[i].properties.distance < closestParkDistance) {
 							closestParkDistance = parks.features[i].properties.distance
-							closestParkNo = i
+							closestParkIdx = i
 						}
 					}
 				}
 				if (window.location.href.indexOf('#') == -1) {
-					window.location.href = location.href + "#" + parks.features[closestParkNo].properties.nr;
+					window.location.href = location.href + "#" + parks.features[closestParkIds].properties.nr;
 				}
 				hashNo = decodeURIComponent(document.location.hash.substr(1))
 				$('[name="WhichPark"]').val(parks.features[hashNo - 1].properties.namn)
