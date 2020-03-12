@@ -273,7 +273,7 @@ var runTheWholeShebang = async function() {
 		function(parkData) {
 			parkData = CSVToArray(parkData)
 
-			for (var i = 1; i < parkData.length; i++) {
+			for (var i = 0; i < parkData.length - 1; i++) {
 				var p = {
 					"type": "Feature",
 					"properties": {
@@ -303,7 +303,6 @@ var runTheWholeShebang = async function() {
 						console.log(parks.features[i].properties.distance)
 						if (parks.features[i].properties.distance < closestParkDistance) {
 							closestParkDistance = parks.features[i].properties.distance
-							//console.log('Closest park is: ' + i)
 							closestParkNo = i
 						}
 					}
