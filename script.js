@@ -302,6 +302,7 @@ var runTheWholeShebang = async function() {
 						parks.features[i].properties.distance = Math.round(getDistanceFromLatLonInKm(position.coords.latitude, position.coords.longitude, parks.features[i].geometry.coordinates[1], parks.features[i].geometry.coordinates[0]))
 						console.log(parks.features[i].properties.distance)
 						if (parks.features[i].properties.distance < closestParkDistance) {
+							console.log('Closest park is: ' + i)
 							closestParkNo = i
 						}
 					}
