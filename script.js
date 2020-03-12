@@ -84,6 +84,8 @@ function sumArr(array) {
 }
 $('.alert').hide()
 
+console.log(document.location.href)
+
 function jsSubmitForm(e) {
 	/*if ($(e).find("button").text() == 'Skicka') {
 		$(e).append("Skickat. Tack för din input!")
