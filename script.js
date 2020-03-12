@@ -295,6 +295,7 @@ var runTheWholeShebang = async function() {
 			function doWhenLocationHasBeenFound(position) {
 				if (position) {
 					for (var i in parks.features) {
+						console.log(i)
 						parks.features[i].properties.distance = Math.round(getDistanceFromLatLonInKm(position.coords.latitude, position.coords.longitude, parks.features[i].geometry.coordinates[1], parks.features[i].geometry.coordinates[0]))
 					}
 				}
