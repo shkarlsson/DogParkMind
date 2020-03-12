@@ -296,8 +296,9 @@ var runTheWholeShebang = async function() {
 				if (position) {
 					for (var i in parks.features) {
 						console.log(i)
-						console.log(parks.features[i])
+						console.log(parks.features[i].properties.name)
 						parks.features[i].properties.distance = Math.round(getDistanceFromLatLonInKm(position.coords.latitude, position.coords.longitude, parks.features[i].geometry.coordinates[1], parks.features[i].geometry.coordinates[0]))
+						console.log(parks.features[i].properties.distance)
 					}
 				}
 				if (window.location.href.indexOf('#') == -1) {
