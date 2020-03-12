@@ -84,8 +84,6 @@ function sumArr(array) {
 }
 $('.alert').hide()
 
-console.log(document.location.origin)
-
 function jsSubmitForm(e) {
 	/*if ($(e).find("button").text() == 'Skicka') {
 		$(e).append("Skickat. Tack för din input!")
@@ -107,7 +105,7 @@ function jsSubmitForm(e) {
 	//Ta tillbaka den här nedanstående när jag har laddat in de gamla värdena.
 	$('#form_div').hide()
 	$('#thanks_div').text('')
-	$('#thanks_div').show().append('<h3>Thanks!</h3> Please, feel free to <a href="https://karlssonprojects.com/DogParkPopPredict/#' + hashNo + '" onclick="openNewSubmitForm()">submit another observation</a> in a few minutes.')
+	$('#thanks_div').show().append('<h3>Thanks!</h3> Please, feel free to <a href="' + document.location.origin + '/#' + hashNo + '" onclick="openNewSubmitForm()">submit another observation</a> in a few minutes.')
 
 
 	return false;
@@ -455,7 +453,7 @@ var runTheWholeShebang = async function() {
 							break
 						}
 						if (sortedParks.features[j].properties.nr != hashNo) {
-							var ddl = '<li><a href="https://karlssonprojects.com/DogParkPopPredict/#' + sortedParks.features[j].properties.nr + '" onclick="runTheWholeShebang()">' +
+							var ddl = '<li><a href="' + document.location.origin + '/#' + sortedParks.features[j].properties.nr + '" onclick="runTheWholeShebang()">' +
 								sortedParks.features[j].properties.namn + ' ('
 							if (typeof sortedParks.features[j].properties.distance != 'undefined') {
 								ddl += sortedParks.features[j].properties.distance
