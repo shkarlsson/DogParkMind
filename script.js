@@ -305,7 +305,7 @@ var runTheWholeShebang = async function() {
 					}
 				}
 				if (window.location.href.indexOf('#') == -1) {
-					window.location.href = location.href + "#" + parks.features[closestParkIds].properties.nr;
+					window.location.href = location.href + "#" + parks.features[closestParkIdx].properties.nr;
 				}
 				hashNo = decodeURIComponent(document.location.hash.substr(1))
 				$('[name="WhichPark"]').val(parks.features[hashNo - 1].properties.namn)
