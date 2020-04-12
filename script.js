@@ -85,12 +85,8 @@ function sumArr(array) {
 $('.alert').hide()
 
 function jsSubmitForm(e) {
-	/*if ($(e).find("button").text() == 'Skicka') {
-		$(e).append("Skickat. Tack för din input!")
-	}*/
-	console.log(e)
 	var es = $(e).serialize()
-
+	console.log('The variable "es" to be json-ified and submitted is a ' + typeof es + ' and has the following value:')
 	console.log(es)
 	if (es.indexOf('NoOfDogs') == -1) {
 		$('.alert').show()
@@ -106,8 +102,6 @@ function jsSubmitForm(e) {
 	$('#form_div').hide()
 	$('#thanks_div').text('')
 	$('#thanks_div').show().append('<h3>Thanks!</h3> Please, feel free to <a href="' + document.location.origin + '/#' + hashNo + '" onclick="openNewSubmitForm()">submit another observation</a> in a few minutes.')
-
-
 	return false;
 }
 
@@ -256,7 +250,7 @@ function buildSankeyDiagram(iv, w) {
 	Plotly.react('sankey-diagram', sankeyData, layout)
 }
 
-var runTheWholeShebang = async function() {
+var showResults = async function() {
 	$('#prediction_text').children().text('')
 	$('#prediction_prefix').text('Thinking...')
 	$('#probability_distribution').remove()
@@ -459,7 +453,7 @@ var runTheWholeShebang = async function() {
 							break
 						}
 						if (sortedParks.features[j].properties.nr != hashNo) {
-							var ddl = '<li><a href="' + document.location.origin + '/#' + sortedParks.features[j].properties.nr + '" onclick="runTheWholeShebang()">' +
+							var ddl = '<li><a href="' + document.location.origin + '/#' + sortedParks.features[j].properties.nr + '" onclick="showResults()">' +
 								sortedParks.features[j].properties.namn + ' ('
 							if (typeof sortedParks.features[j].properties.distance != 'undefined') {
 								ddl += sortedParks.features[j].properties.distance
@@ -556,4 +550,4 @@ var runTheWholeShebang = async function() {
 	)
 }
 
-runTheWholeShebang()
+showResults()
