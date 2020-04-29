@@ -126,11 +126,9 @@ function openNewSubmitForm(evt) {
 }
 
 
-
 function buildSankeyDiagram(iv, w) {
 	//id = input description, w = weights
 	var labels = ['bias0', ...iv]
-
 
 	//Moving in the separated bias neurons to the main neurons' arrays.
 	var w2 = []
@@ -307,7 +305,6 @@ var showResults = async function() {
 				$('[name="ParkLocationLat"]').val(parks.features[hashNo - 1].geometry.coordinates[1])
 				$('[name="DistanceFromPark"]').val(parks.features[hashNo - 1].properties.distance)
 
-
 				serial = 'WhichPark=' + parks.features[hashNo - 1].properties.namn +
 					'&ParkLocationLon=' + parks.features[hashNo - 1].geometry.coordinates[0] +
 					'&ParkLocationLat=' + parks.features[hashNo - 1].geometry.coordinates[1] +
@@ -319,7 +316,7 @@ var showResults = async function() {
 						//console.log(response)
 						var data = JSON.parse(response)
 						var resolver = {}
-						var valuePresent = {}
+						console.log(data)
 						for (var i in data['field']) {
 							if (Array.isArray(data['row'][i])) {
 								data['row'][i] = data['row'][i][0]
