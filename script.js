@@ -250,7 +250,7 @@ function buildSankeyDiagram(iv, w) {
 
 var showResults = async function() {
 	$('#prediction_text').children().text('')
-	$('#prediction_prefix').text('Thinking...')
+	$('#prediction_prefix').text('Please allow me to see your location so that I can figure out the closest dog parks to you...')
 	$('#probability_distribution').remove()
 	$('<canvas class="col" id="probability_distribution">').insertAfter('#prediction_text')
 	openNewSubmitForm()
@@ -284,7 +284,8 @@ var showResults = async function() {
 				parks['features'].push(p)
 			}
 
-			function doWhenLocationHasBeenFound(position) {
+			function doWhenLocationHasOrHasNotBeenFound(position) {
+				$('#prediction_prefix').text('Thinking...')
 				if (position) {
 					var closestParkDistance = 999999
 					var closestParkIdx = 0
@@ -531,17 +532,17 @@ var showResults = async function() {
 
 			function noGeoLoc() {
 				console.log("You have disallowed geolocation...")
-				doWhenLocationHasBeenFound()
+				doWhenLocationHasOrHasNotBeenFound()
 			}
 			if (navigator.geolocation) {
-				//navigator.geolocation.watchPosition(doWhenLocationHasBeenFound)
-				navigator.geolocation.getCurrentPosition(doWhenLocationHasBeenFound, noGeoLoc, {
+				//navigator.geolocation.watchPosition(doWhenLocationHasOrHasNotBeenFound)
+				navigator.geolocation.getCurrentPosition(doWhenLocationHasOrHasNotBeenFound, noGeoLoc, {
 					timeout: 10000
 				})
 			} else {
 				console.log("Geolocation is not supported by this browser.")
 				noGeoLoc()
-					//doWhenLocationHasBeenFound()
+					//doWhenLocationHasOrHasNotBeenFound()
 			}
 		}
 	)
