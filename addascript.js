@@ -88,11 +88,10 @@ map.locate({
 });
 
 //Add layers to top right menu
-L.control.layers(
-	options: {
-		position: 'topright'
-	},
-	baseMaps).addTo(map)
+//L.control.layers(baseMaps).addTo(map)
+L.control.layers(null, baseMaps, {
+	position: 'bottomleft'
+}).addTo(map)
 
 function CSVToArray(strData, strDelimiter) {
 	strDelimiter = (strDelimiter || ",");
