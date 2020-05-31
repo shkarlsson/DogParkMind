@@ -25,20 +25,10 @@ map.on({
 	click: function(e) {
 		if (e.originalEvent.target.id == 'map') { //Grejen efter && gör så att detta endast händer när man klickar på baskartan, inte på en feature.
 			//console.log(e.originalEvent.target.id)
-			clearActiveSelectedParking()
-		}
-	}
-})
-
-map.on({
-	click: function(e) {
-		if (e.originalEvent.target.id == 'map') { //Grejen efter && gör så att detta endast händer när man klickar på baskartan, inte på en feature.
-			//console.log(e.originalEvent.target.id)
-			clearActiveSelectedParking()
 			var popupContent = ''
 			popupContent += '<form style="width:200px" js_action="https://script.google.com/macros/s/AKfycbyHBSts9-u_ixD-ZfidpQpABO_173B9OaklBGCT/exec" id="gform">'
 			popupContent += '<input type="text" name="ParkName" class="form-control" value="" placeholder="New park name" pattern=".{2,}" required title="2 characters minimum">'
-			popupContent += '<input type="text" name="LocationDescription" class="form-control" value="" placeholder="Location Description" pattern=".{10,}" required title="10 characters minimum">'
+			//popupContent += '<input type="text" name="LocationDescription" class="form-control" value="" placeholder="Location Description" pattern=".{10,}" required title="10 characters minimum">'
 			popupContent += '<input type="hidden" value="aNewPark" name="WhichPark">'
 			popupContent += '<input type="hidden" value="' + e.latlng.lng + '" name="ParkLocationLon">'
 			popupContent += '<input type="hidden" value="' + e.latlng.lat + '" name="ParkLocationLat">'
@@ -188,7 +178,7 @@ function jsSubmitForm(e) {
 		$('body').children().remove()
 		$('body').append('<div class="col-md-6 offset-md-3 mt-5 text-center" id="thanks"><h2>' +
 			'Thank you for your contribution! </h2>' +
-			'<p>Your suggestion will go live in a couple of minutes. Initially, the algorithm will assume that the park is like other parks in its predictions. With just a few observations for the newly added park (submitted by users) it will adjust and make predictions specifically tailored to the new park. <a href="https://karlssonprojects.com/DogParkPopPredict/">Take me back to the front page.</a></p></div>')
+			'<p>Your suggestion will go live in a couple of minutes. Initially, the algorithm will assume that the park is like other parks in its predictions. With just a few observations for the newly added park (submitted by users) it will adjust and make predictions specifically tailored to the new park. <a href="./">Take me back to the front page.</a></p></div>')
 	}
 	return false;
 }
