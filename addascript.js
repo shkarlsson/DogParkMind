@@ -75,8 +75,8 @@ function updateCurrentLocationMarker(e) {
 	}
 	currentLocationDot = L.circle(e.latlng, {
 		radius: e.accuracy / 2,
-		fillColor: colors.black100,
-		color: colors.black100,
+		fillColor: '#007bff',
+		color: '#007bff',
 		weight: 2,
 		opacity: 1,
 		fillOpacity: 0.1
@@ -84,8 +84,8 @@ function updateCurrentLocationMarker(e) {
 
 	currentLocationCircle = L.circle(e.latlng, {
 		radius: 1,
-		fillColor: colors.black100,
-		color: colors.black100,
+		fillColor: '#007bff',
+		color: '#007bff',
 		weight: 4,
 		opacity: 1,
 		fillOpacity: 0.8
