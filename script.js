@@ -126,127 +126,6 @@ function openNewSubmitForm(evt) {
 }
 
 
-function buildSankeyDiagram(iv, w) {
-	//id = input description, w = weights
-	var labels = ['bias0', ...iv]
-
-	//Moving in the separated bias neurons to the main neurons' arrays.
-	var w2 = []
-	for (i = 0; i < w.length - 1; i += 2) {
-		w2[i / 2] = [w[i + 1], ...w[i]]
-	}
-
-	//w2 = [w2[0]]
-	console.log(w2)
-
-	var s = 0
-	var t = 0
-	var v = 0
-	var links = {
-		source: [],
-		target: [],
-		value: [],
-		color: []
-	}
-	var c
-	var nl = ''
-	var origPlusForLayerNumber = 0
-	var destNeuronPlusForNeuronNumber = w2[0].length
-	var printr = []
-	var biasNodeOrderer = {
-		s: 0,
-		t: 0,
-		v: 0.001
-	}
-	for (var layer in w2) {
-		layNo = parseInt(layer) + 1 //To give a better name in the graph.
-			//Making sure Bias Nodes show up in the correct layer.
-		biasNodeOrderer.t += w2[layer].length
-		links.source.push(biasNodeOrderer.s)
-		links.target.push(biasNodeOrderer.t)
-		links.value.push(biasNodeOrderer.v)
-		links.color.push('#00000000')
-		biasNodeOrderer.s += w2[layer].length
-		for (var origNeuron in w2[layer]) {
-			//console.log('Neuron: ' + origNeuron + '/' + w2[layer].length)
-			s = parseInt(origNeuron) + parseInt(origPlusForLayerNumber)
-				//console.log(t + ' = ' + destNeuron + ' + ' + destNeuronPlusForNeuronNumber)
-			for (var destNeuron in w2[layer][origNeuron]) {
-				t = parseInt(destNeuron) + parseInt(destNeuronPlusForNeuronNumber) + 1 //since the first neuron(BiasL0) is the bias.
-				v = w2[layer][origNeuron][destNeuron]
-				printr.push(s + ' - ' + t)
-
-				//console.log('Linking ' + s + ' to ' + t + ' with a weight of ' + v + '.')
-				if (v > 0) {
-					links.color.push('#00000044')
-				} else {
-					v = -v
-					links.color.push('#ff000044')
-				}
-				links.source.push(s)
-				links.target.push(t)
-				links.value.push(v)
-
-				//}
-				if (origNeuron == w2[layer].length - 1) {
-					if (layer < w2.length - 1) {
-						if (destNeuron == 0 && layer < w2.length - 1) {
-
-							labels.push('L' + layNo + 'bias')
-						}
-						nl = 'L' + layNo + 'N' + destNeuron
-
-					} else {
-						nl = destNeuron + ' dog(s)'
-					}
-					//console.log('Pushing label' + nl + ' to labels...')
-
-					labels.push(nl)
-				}
-			}
-			console.log(printr)
-			printr = []
-
-		}
-		origPlusForLayerNumber += w2[layer].length
-		destNeuronPlusForNeuronNumber += w2[layer][origNeuron].length
-		if (layer < w2.length - 2) {
-			destNeuronPlusForNeuronNumber += 1 //To add one for each added added bias (per layer)
-		}
-	}
-
-	console.log(labels)
-	console.log(links)
-	var sankeyData = {
-		type: "sankey",
-		orientation: "h",
-		node: {
-			pad: 15,
-			thickness: 30,
-			line: {
-				color: "black",
-				width: 0.5
-			},
-			label: labels,
-			//color: ["blue", "blue", "blue", "blue", "blue", "blue"],
-		},
-
-		link: links
-	}
-
-	var sankeyData = [sankeyData]
-
-	var layout = {
-		/*
-				title: "Basic Sankey",
-				font: {
-					size: 10
-				}
-			*/
-	}
-
-	Plotly.react('sankey-diagram', sankeyData, layout)
-}
 
 var showResults = async function() {
 	$('#prediction_text').children().text('')
@@ -393,8 +272,6 @@ var showResults = async function() {
 							}
 						}
 					}
-
-					//buildSankeyDiagram(Object.keys(tensorObj), weights[0])
 
 					//Normalizing
 					j = 0

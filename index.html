@@ -19,12 +19,6 @@
 		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">		<script src="js/jquery-3.3.1.min.js"></script>
 		<script src="js/Chart.bundle.js"></script>
 		<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
-		<!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.min.js"></script>
-		<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-		<script src="https://cdn.jsdelivr.net/gh/nicolaspanel/numjs@0.15.1/dist/numjs.min.js"></script>
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/5.2.0/math.js"></script>-->
-		<!--<script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@0.14.2/dist/tf.min.js"></script>Tidigare versionen här-->
 		<script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@1.1.2/dist/tf.min.js" integrity="sha256-EkeuP8KT4nZF3TYHp/LozYtUmQyXpJ0UZgm4VeixtyA=" crossorigin="anonymous"></script>
 		<script src='https://npmcdn.com/@turf/turf/turf.min.js'></script>
 		<script src='js/popper.js'></script>
@@ -41,10 +35,10 @@
 				<div class="col-12" id="prediction_suffix">
 				</div>
 			</div>
-			<canvas class="col" id="probability_distribution">
+			<canvas class="col-md-8" id="probability_distribution">
 			
 			</canvas>
-			<div id="form_div" class="col-md-6 offset-md-3 mt-5">Was I correct? Please help me get better by submitting the amount of dogs in the park right now.
+			<div id="form_div" class="col-md-8 offset-md-2 mt-5">Was I correct? Please help me get better by submitting the amount of dogs in the park right now.
 				<form js_action="https://script.google.com/macros/s/AKfycbyHBSts9-u_ixD-ZfidpQpABO_173B9OaklBGCT/exec" id="gform">
 					<div class="btn-group btn-group-toggle small" data-toggle="buttons">
 						<label class="btn btn-outline-primary small">
@@ -88,7 +82,7 @@
 						</button>
 					</div>
 					<div class="form-group mt-5">
-						<input type="text" name="Name" class="form-control" value="" placeholder="Your name">
+						<input type="text" name="Name" class="form-control" value="" placeholder="Your name (optional)">
 					</div>
 					<input type="hidden" value="" name="WhichPark">
 					<input type="hidden" value="" name="ParkLocationLon">
@@ -108,7 +102,6 @@
 					<p>If you have any questions or suggestions, please don't hesitate to <a href = "mailto: sven.henrik.karlsson@gmail.com">send me an email</a>.</p>
 				</div>
 			</div>
-			<div id="sankey-diagram" style="height:4000px"></div>
 			<!--<div class="col-12" id="sankeyDiagramDiv" style="height:4500px;"></div>-->
 			<footer class="mt-5">Powered by <a href="https://darksky.net/poweredby/">Dark Sky</a>, <a href="https://api.dryg.net/">dryg.net</a> and <a href="https://www.tensorflow.org/">Tensor Flow</a></footer>
 		</div>
