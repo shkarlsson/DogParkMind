@@ -3,7 +3,7 @@ if (isIE) {
 	alert("Det verkar som att du använder Internet Explorer. Vissa funktioner på sajten kan därför fungera dåligt. Vänligen överväg att byta till en modern webbläsare, såsom Chrome eller Firefox.")
 }
 
-var pointLayer, tidigareSynpunkter, globalValues, zoomYtor, parkeringar, aktivParkering, currentLocationCircle, currentLocationDot
+var pointLayer, tidigareSynpunkter, globalValues, zoomYtor, parkeringar, aktivParkering
 
 var baseMaps = {
 	"Light": L.tileLayer('https://api.mapbox.com/styles/v1/mapbox/light-v9/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoiaGVycmthcmxzb24iLCJhIjoiY2p3aWE5dzR0MmU0eTQzbXFpeDBmanBrZSJ9.IcsRbVMHdM1nkNHEPZvAbg'),
@@ -68,14 +68,16 @@ map.on({
 	}
 })
 
+var currentLocation = {}
+
 function updateCurrentLocationMarker(e) {
 	//L.marker(e.latlng).addTo(map)
 	//	.bindPopup("You are within " + radius + " meters from this point").openPopup();
-	if (currentLocationDot) {
-		map.removeLayer(currentLocationDot)
-		map.removeLayer(currentLocationCircle)
+	if (currentLocation.dot) {
+		map.removeLayer(currentLocation.dot)
+		map.removeLayer(currentLocation.circle)
 	}
-	currentLocationDot = L.circle(e.latlng, {
+	currentLocation.dot = L.circle(e.latlng, {
 		radius: e.accuracy / 2,
 		fillColor: '#007bff',
 		color: '#007bff',
@@ -84,7 +86,7 @@ function updateCurrentLocationMarker(e) {
 		fillOpacity: 0.1
 	}).addTo(map);
 
-	currentLocationCircle = L.circle(e.latlng, {
+	currentLocation.circle = L.circle(e.latlng, {
 		radius: 1,
 		fillColor: '#007bff',
 		color: '#007bff',
@@ -175,7 +177,6 @@ var goToPositionButton = L.Control.extend({
 });
 
 map.addControl(new goToPositionButton());
-
 function jsSubmitForm(e) {
 	if (e.checkValidity()) {
 		var es = $(e).serialize()
