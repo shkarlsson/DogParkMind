@@ -10,9 +10,7 @@ var baseMaps = {
 	"Colored": L.tileLayer('https://api.mapbox.com/styles/v1/mapbox/streets-v9/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoiaGVycmthcmxzb24iLCJhIjoiY2p3aWE5dzR0MmU0eTQzbXFpeDBmanBrZSJ9.IcsRbVMHdM1nkNHEPZvAbg'),
 	"Satellite": L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
 		attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community',
-		options: {
-			position: 'bottomleft'
-		},
+		position: 'bottomleft',
 	}),
 }
 
