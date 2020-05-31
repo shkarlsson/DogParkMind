@@ -21,14 +21,13 @@ var map = L.map('map', {
 
 var parkMarkerToBeAdded, popupContent; // replace marker
 
+
 map.on({
 	click: function(e) {
-		if (e.originalEvent.target.id == 'map') { //Grejen efter && gör så att detta endast händer när man klickar på baskartan, inte på en feature.
-			//console.log(e.originalEvent.target.id)
+		if (e.originalEvent.target.id == 'map') {
 			var popupContent = ''
 			popupContent += '<form style="width:200px" js_action="https://script.google.com/macros/s/AKfycbyHBSts9-u_ixD-ZfidpQpABO_173B9OaklBGCT/exec" id="gform">'
 			popupContent += '<input type="text" name="ParkName" class="form-control" value="" placeholder="New park name" pattern=".{2,}" required title="2 characters minimum">'
-			//popupContent += '<input type="text" name="LocationDescription" class="form-control" value="" placeholder="Location Description" pattern=".{10,}" required title="10 characters minimum">'
 			popupContent += '<input type="hidden" value="aNewPark" name="WhichPark">'
 			popupContent += '<input type="hidden" value="' + e.latlng.lng + '" name="ParkLocationLon">'
 			popupContent += '<input type="hidden" value="' + e.latlng.lat + '" name="ParkLocationLat">'
@@ -44,16 +43,14 @@ map.on({
 					maxWidth: "auto"
 				})
 				parkMarkerToBeAdded.addTo(map);
-				/*$("#gform").submit(function() {
-					jsSubmitForm($("#gform"))
-					return false;
-				});*/
+
 			} else {
 				parkMarkerToBeAdded.setLatLng(e.latlng);
 			}
 			parkMarkerToBeAdded.bindPopup(popupContent)
 
 			parkMarkerToBeAdded.openPopup()
+			$('#map-instructions').addClass('invisible')
 		}
 	}
 })
