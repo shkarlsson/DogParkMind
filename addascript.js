@@ -215,7 +215,7 @@ $.get(
 			allMarkers.push(L.marker([data[i][3], data[i][2]], {
 					icon: L.AwesomeMarkers.icon({
 						icon: 'help-buoy',
-						markerColor: '#007bff'
+						markerColor: 'blue'
 					})
 				}).bindPopup('<b>' + data[i][0] + '</b><br>' + data[i][1])
 				.openPopup())
