@@ -80,12 +80,10 @@ function updateCurrentLocationMarker(e) {
 }
 
 map.on('locationfound', updateCurrentLocationMarker);
-map.locate({
+/*map.locate({
 	setView: true,
 	zoom: 12,
-	//watch: true,
-	//maxZoom: 8
-});
+});*/
 
 //Add layers to top right menu
 //L.control.layers(baseMaps).addTo(map)
