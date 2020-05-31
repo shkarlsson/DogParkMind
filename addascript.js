@@ -6,6 +6,9 @@ if (isIE) {
 var pointLayer, tidigareSynpunkter, globalValues, zoomYtor, parkeringar, aktivParkering, currentLocationCircle, currentLocationDot
 
 var baseMaps = {
+	'options': {
+		position: 'bottomleft'
+	},
 	"Light": L.tileLayer('https://api.mapbox.com/styles/v1/mapbox/light-v9/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoiaGVycmthcmxzb24iLCJhIjoiY2p3aWE5dzR0MmU0eTQzbXFpeDBmanBrZSJ9.IcsRbVMHdM1nkNHEPZvAbg'),
 	"Colored": L.tileLayer('https://api.mapbox.com/styles/v1/mapbox/streets-v9/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoiaGVycmthcmxzb24iLCJhIjoiY2p3aWE5dzR0MmU0eTQzbXFpeDBmanBrZSJ9.IcsRbVMHdM1nkNHEPZvAbg'),
 	"Satellite": L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
@@ -52,19 +55,6 @@ map.on('click', function(e) {
 
 	parkMarkerToBeAdded.openPopup()
 });
-
-function getDistanceFromLatLonInKm(lat1, lon1, lat2, lon2) {
-	var R = 6371000; // Radius of the earth in m
-	var dLat = deg2rad(lat2 - lat1); // deg2rad below
-	var dLon = deg2rad(lon2 - lon1);
-	var a =
-		Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-		Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) *
-		Math.sin(dLon / 2) * Math.sin(dLon / 2);
-	var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-	var d = R * c; // Distance in m
-	return d;
-}
 
 function updateCurrentLocationMarker(e) {
 	//L.marker(e.latlng).addTo(map)
@@ -180,6 +170,22 @@ function showPosition(position) {
 }
 getLocation()
 
+var goToPositionButton = L.Control.extend({
+	options: {
+		position: 'topright'
+	},
+	onAdd: function(map) {
+		//<button id="add-button" type="button" class="btn btn-secondary btn-sm"><span class="fa fa-location-arrow"></span></button>
+		var container = L.DomUtil.create('div', 'leaflet-bar leaflet-control leaflet-control-custom btn btn-secondary btn-sm');
+		container.appendChild(L.DomUtil.create('span', 'fa fa-location-arrow'))
+		container.onclick = function() {
+			map.panTo(currentLocation.dot._latlng)
+		}
+		return container;
+	}
+});
+
+map.addControl(new goToPositionButton());
 
 function jsSubmitForm(e) {
 	if (e.checkValidity()) {
@@ -209,7 +215,7 @@ $.get(
 			allMarkers.push(L.marker([data[i][3], data[i][2]], {
 					icon: L.AwesomeMarkers.icon({
 						icon: 'help-buoy',
-						markerColor: 'lightgray'
+						markerColor: '#007bff'
 					})
 				}).bindPopup('<b>' + data[i][0] + '</b><br>' + data[i][1])
 				.openPopup())
