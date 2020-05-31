@@ -9,8 +9,7 @@ var baseMaps = {
 	"Light": L.tileLayer('https://api.mapbox.com/styles/v1/mapbox/light-v9/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoiaGVycmthcmxzb24iLCJhIjoiY2p3aWE5dzR0MmU0eTQzbXFpeDBmanBrZSJ9.IcsRbVMHdM1nkNHEPZvAbg'),
 	"Colored": L.tileLayer('https://api.mapbox.com/styles/v1/mapbox/streets-v9/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoiaGVycmthcmxzb24iLCJhIjoiY2p3aWE5dzR0MmU0eTQzbXFpeDBmanBrZSJ9.IcsRbVMHdM1nkNHEPZvAbg'),
 	"Satellite": L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
-		attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community',
-		position: 'bottomleft',
+		attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community'
 	}),
 }
 
@@ -89,7 +88,11 @@ map.locate({
 });
 
 //Add layers to top right menu
-L.control.layers(baseMaps).addTo(map)
+L.control.layers(
+	options: {
+		position: 'topright'
+	},
+	baseMaps).addTo(map)
 
 function CSVToArray(strData, strDelimiter) {
 	strDelimiter = (strDelimiter || ",");
