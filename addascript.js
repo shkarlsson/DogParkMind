@@ -16,7 +16,7 @@ var baseMaps = {
 var map = L.map('map', {
 	//center: [59.3274541, 18.0543566],
 	zoom: 13,
-	layers: [baseMaps['Satellite']]
+	layers: [baseMaps['Light']]
 })
 
 var parkMarkerToBeAdded, popupContent; // replace marker
