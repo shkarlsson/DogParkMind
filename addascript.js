@@ -16,7 +16,7 @@ var baseMaps = {
 var map = L.map('map', {
 	//center: [59.3274541, 18.0543566],
 	zoom: 13,
-	layers: [baseMaps['Satellite']]
+	layers: [baseMaps['Light']]
 })
 
 var parkMarkerToBeAdded, popupContent; // replace marker
@@ -27,7 +27,7 @@ map.on({
 		if (e.originalEvent.target.id == 'map') {
 			var popupContent = ''
 			popupContent += '<form style="width:200px" js_action="https://script.google.com/macros/s/AKfycbyHBSts9-u_ixD-ZfidpQpABO_173B9OaklBGCT/exec" id="gform">'
-			popupContent += '<input type="text" name="ParkName" class="form-control" value="" placeholder="New park name" pattern=".{2,}" required title="2 characters minimum">'
+			popupContent += '<input type="text" name="ParkName" class="form-control" value="" placeholder="Park Name" pattern=".{2,}" required title="2 characters minimum">'
 			popupContent += '<input type="hidden" value="aNewPark" name="WhichPark">'
 			popupContent += '<input type="hidden" value="' + e.latlng.lng + '" name="ParkLocationLon">'
 			popupContent += '<input type="hidden" value="' + e.latlng.lat + '" name="ParkLocationLat">'
