@@ -125,7 +125,7 @@ function openNewSubmitForm(evt) {
 	return false
 }
 
-
+window.googleDocCallback = function () { return true; }; //Enl. https://stackoverflow.com/questions/28546969/cors-authorization-on-google-sheets-api-requests
 
 var showResults = async function() {
 	$('#prediction_text').children().text('')
@@ -139,7 +139,7 @@ var showResults = async function() {
 		"features": []
 	}
 	$.get(
-		"https://docs.google.com/spreadsheets/d/e/2PACX-1vRFp-Zv8-MhnnmFqNeGvZCBzYlRhP3G59TnNRCjOU06ixyzT8wA0miWi-Ewxw4Ay5lrG3b56dj7qUXU/pub?gid=1716930661&single=true&output=csv",
+		"https://docs.google.com/spreadsheets/d/e/2PACX-1vRFp-Zv8-MhnnmFqNeGvZCBzYlRhP3G59TnNRCjOU06ixyzT8wA0miWi-Ewxw4Ay5lrG3b56dj7qUXU/pub?gid=1716930661&single=true&output=csv&callback=googleDocCallback",
 		//Reading the data from google sheets...
 		function(parkData) {
 			parkData = CSVToArray(parkData)
