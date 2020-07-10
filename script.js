@@ -125,7 +125,10 @@ function openNewSubmitForm(evt) {
 	return false
 }
 
-window.googleDocCallback = function () { return true; }; //Enl. https://stackoverflow.com/questions/28546969/cors-authorization-on-google-sheets-api-requests
+window.googleDocCallback = function () {
+	console.log('Running window.googleDocCallback()')
+	return true;
+}; //Enl. https://stackoverflow.com/questions/28546969/cors-authorization-on-google-sheets-api-requests
 
 var showResults = async function() {
 	$('#prediction_text').children().text('')
