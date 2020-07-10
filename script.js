@@ -423,7 +423,7 @@ var showResults = async function() {
 		}
 	)
 }
-window.googleDocCallback = function () {
+googleDocCallback = function () {
 	console.log('Running window.googleDocCallback()')
 	return true;
 }; //Enl. https://stackoverflow.com/questions/28546969/cors-authorization-on-google-sheets-api-requests
