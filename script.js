@@ -140,7 +140,7 @@ var showResults = async function() {
 	$.get(
 		//Reading the data from google sheets...
 		//"https://docs.google.com/spreadsheets/d/e/2PACX-1vRFp-Zv8-MhnnmFqNeGvZCBzYlRhP3G59TnNRCjOU06ixyzT8wA0miWi-Ewxw4Ay5lrG3b56dj7qUXU/pub?gid=1716930661&single=true&output=csv&callback=googleDocCallback",
-		"parks.csv",
+		"parks.csv", //Detta är en temporär workaround sedan google tajtade till sina CORS-regler. Det ska gå att lösa med API-nycklar och grejer, men jag pallar inte att kolla på det just nu.
 		function(parkData) {
 			parkData = CSVToArray(parkData)
 
