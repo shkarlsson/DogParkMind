@@ -175,7 +175,9 @@ function jsSubmitForm(e) {
 		$('body').children().remove()
 		$('body').append('<div class="col-md-6 offset-md-3 mt-5 text-center" id="thanks"><h2>' +
 			'Thank you for your contribution! </h2>' +
-			'<p>Your suggestion will go live in a couple of minutes. Initially, the algorithm will assume that the park is like other parks in its predictions. With just a few observations for the newly added park (submitted by users) it will adjust and make predictions specifically tailored to the new park. <a href="./">Take me back to the front page.</a></p></div>')
+			'<p>Your suggestion will go live in a couple of minutes. Initially, the algorithm will assume that the park is like other parks in its predictions. With just a few observations for the newly added park (submitted by users) it will adjust and make predictions specifically tailored to the new park. <br>			<button class="btn btn-light mt-5" type="button" href="./">Take me back to the front page.</button></p></div>')
+
+			
 	}
 	return false;
 }
