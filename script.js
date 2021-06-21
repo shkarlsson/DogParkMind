@@ -165,17 +165,25 @@ var showResults = async function() {
 
 			function doWhenLocationHasOrHasNotBeenFound(position) {
 				$('#prediction_prefix').text('Thinking...')
-				if (position) {
-					var closestParkDistance = 999999
-					var closestParkIdx = 0
-					for (var i in parks.features) {
-						parks.features[i].properties.distance = Math.round(getDistanceFromLatLonInKm(position.coords.latitude, position.coords.longitude, parks.features[i].geometry.coordinates[1], parks.features[i].geometry.coordinates[0]))
-						if (parks.features[i].properties.distance < closestParkDistance) {
-							closestParkDistance = parks.features[i].properties.distance
-							closestParkIdx = i
+				if (!position) {
+					var position = {
+						coords: {
+							latitude: 59.320,
+							longitude: 18.005
 						}
 					}
+
 				}
+				var closestParkDistance = 999999
+				var closestParkIdx = 0
+				for (var i in parks.features) {
+					parks.features[i].properties.distance = Math.round(getDistanceFromLatLonInKm(position.coords.latitude, position.coords.longitude, parks.features[i].geometry.coordinates[1], parks.features[i].geometry.coordinates[0]))
+					if (parks.features[i].properties.distance < closestParkDistance) {
+						closestParkDistance = parks.features[i].properties.distance
+						closestParkIdx = i
+					}
+				}
+
 				if (window.location.href.indexOf('#') == -1) {
 					window.location.href = location.href + "#" + parks.features[closestParkIdx].properties.nr;
 				}
