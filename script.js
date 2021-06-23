@@ -140,7 +140,7 @@ var showResults = async function() {
 	$.get(
 		//Reading the data from google sheets...
 		//"https://docs.google.com/spreadsheets/d/e/2PACX-1vRFp-Zv8-MhnnmFqNeGvZCBzYlRhP3G59TnNRCjOU06ixyzT8wA0miWi-Ewxw4Ay5lrG3b56dj7qUXU/pub?gid=1716930661&single=true&output=csv&callback=googleDocCallback",
-		"parks.csv",
+		"parks.csv", //Detta är en temporär workaround sedan google tajtade till sina CORS-regler. Det ska gå att lösa med API-nycklar och grejer, men jag pallar inte att kolla på det just nu.
 		function(parkData) {
 			parkData = CSVToArray(parkData)
 
@@ -165,17 +165,25 @@ var showResults = async function() {
 
 			function doWhenLocationHasOrHasNotBeenFound(position) {
 				$('#prediction_prefix').text('Thinking...')
-				if (position) {
-					var closestParkDistance = 999999
-					var closestParkIdx = 0
-					for (var i in parks.features) {
-						parks.features[i].properties.distance = Math.round(getDistanceFromLatLonInKm(position.coords.latitude, position.coords.longitude, parks.features[i].geometry.coordinates[1], parks.features[i].geometry.coordinates[0]))
-						if (parks.features[i].properties.distance < closestParkDistance) {
-							closestParkDistance = parks.features[i].properties.distance
-							closestParkIdx = i
+				if (!position) {
+					var position = {
+						coords: {
+							latitude: 59.320,
+							longitude: 18.005
 						}
 					}
+
 				}
+				var closestParkDistance = 999999
+				var closestParkIdx = 0
+				for (var i in parks.features) {
+					parks.features[i].properties.distance = Math.round(getDistanceFromLatLonInKm(position.coords.latitude, position.coords.longitude, parks.features[i].geometry.coordinates[1], parks.features[i].geometry.coordinates[0]))
+					if (parks.features[i].properties.distance < closestParkDistance) {
+						closestParkDistance = parks.features[i].properties.distance
+						closestParkIdx = i
+					}
+				}
+
 				if (window.location.href.indexOf('#') == -1) {
 					window.location.href = location.href + "#" + parks.features[closestParkIdx].properties.nr;
 				}
