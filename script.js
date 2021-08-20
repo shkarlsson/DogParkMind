@@ -131,10 +131,11 @@ var showResults = async function() {
 	}
 	$.get(
 		//Reading the data from google sheets...
-		//"https://docs.google.com/spreadsheets/d/e/2PACX-1vRFp-Zv8-MhnnmFqNeGvZCBzYlRhP3G59TnNRCjOU06ixyzT8wA0miWi-Ewxw4Ay5lrG3b56dj7qUXU/pub?gid=1716930661&single=true&output=csv&callback=googleDocCallback",
-		"parks.csv", //This is a temporary workaround since CORS rules were tightened. For now, the available parks will just have to be hard coded. TODO: Solve with API keys and stuff.
+		"https://docs.google.com/spreadsheets/d/e/2PACX-1vRFp-Zv8-MhnnmFqNeGvZCBzYlRhP3G59TnNRCjOU06ixyzT8wA0miWi-Ewxw4Ay5lrG3b56dj7qUXU/pub?gid=1716930661&single=true&output=csv",
+
 		function(parkData) {
 			parkData = CSVToArray(parkData)
+			console.log(parkData)
 
 			for (var i = 1; i < parkData.length; i++) {
 				var p = {
