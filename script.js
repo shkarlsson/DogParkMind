@@ -1,3 +1,40 @@
+var today = new Date();
+var helgdataToKeep = {}
+var daysBeforeToKeep = 2
+var daysAfterToKeep = 3 //Including current day
+
+function addDays(date, days) {
+	var result = new Date(date);
+	result.setDate(result.getDate() + days);
+	return result;
+  }
+
+function isObject(thing){
+	return (typeof thing === 'object' && !Array.isArray(thing) && thing !== null)
+}
+function isRedDay(date){
+	return + date.getDay() == 0 || isObject(isHoliday(date))
+}
+
+function isWorkFreeDay(date){
+	return + (isRedDay(date) || date.getDay() == 6)
+}
+
+const weekDayMap = ['Söndag','Måndag','Tisdag','Onsdag','Torsdag','Fredag','Lördag']
+
+for (var m = -daysBeforeToKeep; m < daysAfterToKeep; m++) {
+	thisDate = addDays(today,m)
+	helgdataToKeep['redDay' + m] = isRedDay(thisDate)
+	helgdataToKeep['workFreeDay' + m] = isWorkFreeDay(thisDate)
+	if (m == 0) {
+	  helgdataToKeep['weekday'] = weekDayMap[thisDate.getDay()]
+	} 
+	if(today.getDay() == 6 || today.getDay() == 0) alert('Weekend!');
+	
+}
+
+helgdataToKeep = JSON.stringify(helgdataToKeep)
+
 var chart, parks, hashNo, tensorObj
 
 function getDistanceFromLatLonInKm(lat1, lon1, lat2, lon2) {
@@ -93,12 +130,10 @@ function jsSubmitForm(e) {
 		return false
 	}
 	$.post($(e).attr('js_action'), es, function(response) {
-		// do something here on success
 		$(e).append
 	}, 'json');
-	//$('[name="NoOfDogs"]').val('')
 
-	//Ta tillbaka den här nedanstående när jag har laddat in de gamla värdena.
+	//Take back below when old values have been loaded.
 	$('#form_div').hide()
 	$('#thanks_div').text('')
 	$('#thanks_div').show().append('<h3>Thanks!</h3> Please, feel free to <a href="' + document.location.origin + '/#' + hashNo + '" onclick="openNewSubmitForm()">submit another observation</a> in a few minutes.')
@@ -110,12 +145,6 @@ $(document).ready(function() {
 	$('#thanks_div').hide()
 	$('#probability_distribution').hide()
 });
-
-//Det verkar som jag klarar mig utan nedanstående //190609
-/*$("#gform").submit(function() {
-	jsSubmitForm($("#gform"))
-	return false;
-});*/
 
 function openNewSubmitForm(evt) {
 	$('#form_div').show()
@@ -139,10 +168,11 @@ var showResults = async function() {
 	}
 	$.get(
 		//Reading the data from google sheets...
-		//"https://docs.google.com/spreadsheets/d/e/2PACX-1vRFp-Zv8-MhnnmFqNeGvZCBzYlRhP3G59TnNRCjOU06ixyzT8wA0miWi-Ewxw4Ay5lrG3b56dj7qUXU/pub?gid=1716930661&single=true&output=csv&callback=googleDocCallback",
-		"parks.csv", //Detta är en temporär workaround sedan google tajtade till sina CORS-regler. Det ska gå att lösa med API-nycklar och grejer, men jag pallar inte att kolla på det just nu.
+		"https://docs.google.com/spreadsheets/d/e/2PACX-1vRFp-Zv8-MhnnmFqNeGvZCBzYlRhP3G59TnNRCjOU06ixyzT8wA0miWi-Ewxw4Ay5lrG3b56dj7qUXU/pub?gid=1716930661&single=true&output=csv",
+
 		function(parkData) {
 			parkData = CSVToArray(parkData)
+			console.log(parkData)
 
 			for (var i = 1; i < parkData.length; i++) {
 				var p = {
@@ -196,7 +226,8 @@ var showResults = async function() {
 				serial = 'WhichPark=' + parks.features[hashNo - 1].properties.namn +
 					'&ParkLocationLon=' + parks.features[hashNo - 1].geometry.coordinates[0] +
 					'&ParkLocationLat=' + parks.features[hashNo - 1].geometry.coordinates[1] +
-					'&DistanceFromPark=' + parks.features[hashNo - 1].properties.distance
+					'&DistanceFromPark=' + parks.features[hashNo - 1].properties.distance +
+					'&helgdatatokeep' + helgdataToKeep
 
 				//Doing the new transformation of values to tensor.
 				var nowX = new Promise(function(resolve, reject) {
@@ -219,7 +250,6 @@ var showResults = async function() {
 							resolver[data['field'][i]] = data['row'][i]
 						}
 						resolve(resolver)
-							//resolve(data)
 					}, 'json');
 				});
 				if (!model) {
@@ -246,9 +276,8 @@ var showResults = async function() {
 				}
 
 
-				Promise.all([nowX, model, normVals, weights]).then(function(values) { //Now I have all the data. Here we go (doing the same stuff as in the python script)!
-					//console.log(values);
-					nowX['Name'] = 'H' //For testing purposes. Should be based on who's logged in or an fraction of each based on how good observations they've done.
+				Promise.all([nowX, model, normVals, weights]).then(function(values) { //Now I have all the data. Here we go (doing the same stuff as in the python script generating the training data)!
+					nowX['Name'] = 'H' //For testing purposes. This be based on who's logged in or an fraction of each based on how good/many observations they've made.
 					nowX = values[0]
 					model = values[1]
 					normVals = values[2]
@@ -258,7 +287,7 @@ var showResults = async function() {
 
 					for (var i in normVals['mean']) {
 						if (normVals['min'][i] == normVals['max'][i]) {
-							continue //This shit makes sure no features that only have one value gets included in the the tensorObj.
+							continue //This makes sure no features that only have one value gets included in the the tensorObj.
 						}
 						if (i in nowX) {
 							tensorObj[i] = nowX[i]
@@ -266,22 +295,20 @@ var showResults = async function() {
 							if (i.substr(0, 4) == 'cat_') { //Making one-hots
 								var cat = i.substr(4, i.lastIndexOf('_') - 4)
 								var catVal = i.substr(i.lastIndexOf('_') + 1)
-									//console.log('Checking if nowX[' + cat + '] (' + nowX[cat] + ') == ' + catVal)
 								if (nowX[cat] == catVal) {
-									//console.log('it was')
 									tensorObj[i] = 1
 								} else {
 									tensorObj[i] = 0
 								}
 							}
-							if (i.substr(0, 3) == 'vp_') { //Making value_present values
-								tensorObj[i] = 1 //Alla values present ska vara 1:or eftersom det enda de mäter är huruvida något är fel på API:t, och det bör det inte kunna vara.
-
+							if (i.substr(0, 3) == 'vp_') { 
+								//"vp_..." is a bool mask indicating whether real values are present in the corresponding (other) columns. This is only relevant for building the training data, so here all are set to 1.
+								tensorObj[i] = 1
 							}
 						}
 					}
 
-					//Normalizing
+					//Normalizing array
 					j = 0
 					var tensorArr = []
 					var labels = []
@@ -290,7 +317,6 @@ var showResults = async function() {
 						tensorObj[i] = normalizedValue
 						labels[j] = i
 						tensorArr[j] = normalizedValue
-							//console.log(i + ' - ' + tensorObj[i] + ' - ' + j)
 						j += 1
 					}
 
@@ -349,13 +375,10 @@ var showResults = async function() {
 					}
 					$("#park_dropdown_list").append('<a href="addaplace.html">Add a missing park</a>')
 
-					//$('#probability_distribution').empty()
 					var ctx = document.getElementById('probability_distribution').getContext('2d');
 					var chart = new Chart(ctx, {
-						// The type of chart we want to create
 						type: 'bar',
 
-						// The data for our dataset
 						data: {
 							labels: ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10+"],
 							datasets: [{
@@ -367,14 +390,13 @@ var showResults = async function() {
 								fill: 'origin',
 							}, ]
 						},
-						// Configuration options go here
+
 						options: {
 							elements: {
 								line: {
 									fill: '-1', // by default, fill lines to the previous dataset
 									borderWidth: 3,
 								},
-								//point: standardPoint,
 							},
 							scales: {
 								yAxes: [{
@@ -420,14 +442,12 @@ var showResults = async function() {
 				doWhenLocationHasOrHasNotBeenFound()
 			}
 			if (navigator.geolocation) {
-				//navigator.geolocation.watchPosition(doWhenLocationHasOrHasNotBeenFound)
 				navigator.geolocation.getCurrentPosition(doWhenLocationHasOrHasNotBeenFound, noGeoLoc, {
 					timeout: 10000
 				})
 			} else {
 				console.log("Geolocation is not supported by this browser.")
 				noGeoLoc()
-					//doWhenLocationHasOrHasNotBeenFound()
 			}
 		}
 	)
@@ -435,6 +455,6 @@ var showResults = async function() {
 googleDocCallback = function () {
 	console.log('Running window.googleDocCallback()')
 	return true;
-}; //Enl. https://stackoverflow.com/questions/28546969/cors-authorization-on-google-sheets-api-requests
+}; //According to https://stackoverflow.com/questions/28546969/cors-authorization-on-google-sheets-api-requests
 
 showResults()
