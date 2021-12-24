@@ -1,3 +1,40 @@
+var today = new Date();
+var helgdataToKeep = {}
+var daysBeforeToKeep = 2
+var daysAfterToKeep = 3 //Including current day
+
+function addDays(date, days) {
+	var result = new Date(date);
+	result.setDate(result.getDate() + days);
+	return result;
+  }
+
+function isObject(thing){
+	return (typeof thing === 'object' && !Array.isArray(thing) && thing !== null)
+}
+function isRedDay(date){
+	return + date.getDay() == 0 || isObject(isHoliday(date))
+}
+
+function isWorkFreeDay(date){
+	return + (isRedDay(date) || date.getDay() == 6)
+}
+
+const weekDayMap = ['Söndag','Måndag','Tisdag','Onsdag','Torsdag','Fredag','Lördag']
+
+for (var m = -daysBeforeToKeep; m < daysAfterToKeep; m++) {
+	thisDate = addDays(today,m)
+	helgdataToKeep['redDay' + m] = isRedDay(thisDate)
+	helgdataToKeep['workFreeDay' + m] = isWorkFreeDay(thisDate)
+	if (m == 0) {
+	  helgdataToKeep['weekday'] = weekDayMap[thisDate.getDay()]
+	} 
+	if(today.getDay() == 6 || today.getDay() == 0) alert('Weekend!');
+	
+}
+
+helgdataToKeep = JSON.stringify(helgdataToKeep)
+
 var chart, parks, hashNo, tensorObj
 
 function getDistanceFromLatLonInKm(lat1, lon1, lat2, lon2) {
@@ -189,7 +226,8 @@ var showResults = async function() {
 				serial = 'WhichPark=' + parks.features[hashNo - 1].properties.namn +
 					'&ParkLocationLon=' + parks.features[hashNo - 1].geometry.coordinates[0] +
 					'&ParkLocationLat=' + parks.features[hashNo - 1].geometry.coordinates[1] +
-					'&DistanceFromPark=' + parks.features[hashNo - 1].properties.distance
+					'&DistanceFromPark=' + parks.features[hashNo - 1].properties.distance +
+					'&helgdatatokeep' + helgdataToKeep
 
 				//Doing the new transformation of values to tensor.
 				var nowX = new Promise(function(resolve, reject) {
